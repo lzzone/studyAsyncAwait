@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <link rel="stylesheet" href="">
+</head>
+<body>
+    <script>
+
+        // 01  这样子是不能使用的，因为需要promise
+        async function first(){
+            await (function (){
+                setTimeout( ()=>{
+                    console.log(123)
+                },0 );
+            })()
+            console.log(456);
+        }
+        first();
+
+        //02 这个可以把异步变成同步，并且需要res，如果没有res()，下面的console.log(456)就不能执行。或者rej()也是可以的
+        function second(){
+            return new Promise( (res,rej)=>{
+                setTimeout( ()=>{
+                    console.log(123);
+                    res()
+
+                },0 )
+            } )
+        }
+
+        (async function(){
+            console.log("执行自执行函数")
+            await second();
+            console.log(456);
+        })()
+
+    </script>
+</body>
+</html>
